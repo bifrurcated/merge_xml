@@ -1,0 +1,16 @@
+com.vpolosov.trainee.merge_xml
+com.vpolosov.trainee.merge_xml.aspect
+com.vpolosov.trainee.merge_xml.config
+com.vpolosov.trainee.merge_xml.controller
+com.vpolosov.trainee.merge_xml.handler
+com.vpolosov.trainee.merge_xml.handler.dto
+com.vpolosov.trainee.merge_xml.handler.exception
+com.vpolosov.trainee.merge_xml.handler.filter
+com.vpolosov.trainee.merge_xml.model
+com.vpolosov.trainee.merge_xml.repository
+com.vpolosov.trainee.merge_xml.service
+com.vpolosov.trainee.merge_xml.service.files
+com.vpolosov.trainee.merge_xml.service.specification
+com.vpolosov.trainee.merge_xml.utils
+com.vpolosov.trainee.merge_xml.validators
+com.vpolosov.trainee.merge_xml.validators.input_data_validators
