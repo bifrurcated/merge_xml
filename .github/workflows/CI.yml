@@ -17,10 +17,7 @@ env:
     --show-version
     --no-transfer-progress
 
-permissions:
-  checks: write
-  contents: write
-  pull-requests: write
+permissions: write-all
 
 jobs:
   checkstyle:
