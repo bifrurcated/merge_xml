@@ -1,3 +1,6 @@
+![Maven CI](https://github.com/DmitryVorotilov/merge_xml/actions/workflows/CI.yml/badge.svg)
+![JavaDoc Pages](https://github.com/DmitryVorotilov/merge_xml/actions/workflows/deploy.yml/badge.svg)
+
 Для запуска необходимо отредактировать конфигурацию:
 
 1. Ставим галочку Modify options - Ovveride configuration properties
