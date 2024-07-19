@@ -93,6 +93,8 @@ jobs:
     needs: test
     name: JaCoCo Test Coverage
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
         name: Check out code
