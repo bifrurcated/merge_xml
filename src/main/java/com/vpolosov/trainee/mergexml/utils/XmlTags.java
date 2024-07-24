@@ -1,10 +1,13 @@
 package com.vpolosov.trainee.mergexml.utils;
 
+import lombok.experimental.UtilityClass;
+
 /**
  * Вспомогательный гласс в котором находятся константы тегов для {@code XMl} документа.
  *
  * @author Maksim Litvinenko
  */
+@UtilityClass
 public class XmlTags {
 
     /**

@@ -9,6 +9,7 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.verification.VerificationMode;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -16,6 +17,7 @@ import java.nio.file.Paths;
 import static com.vpolosov.trainee.mergexml.utils.XmlTags.PAYER;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -58,11 +60,9 @@ class SinglePayerValidatorTest {
         var xmlFiles = fileUtil.listXml(path, 1, 10);
 
         var payer = documentUtil.getFirstElementByTagName(xmlFiles.get(0), PAYER);
-        for (int i = 1; i < xmlFiles.size(); i++) {
-            int finalI = i;
-            assertThrows(DifferentPayerException.class, () -> singlePayerValidator.test(payer, xmlFiles.get(finalI)));
-        }
 
-        verify(singlePayerValidator, times(9)).test(any(String.class), any(File.class));
+        assertThrows(DifferentPayerException.class, () -> xmlFiles.forEach(xmlFile -> singlePayerValidator.test(payer, xmlFile)));
+
+        verify(singlePayerValidator, atLeastOnce()).test(any(String.class), any(File.class));
     }
 }

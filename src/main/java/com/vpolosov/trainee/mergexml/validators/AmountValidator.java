@@ -2,6 +2,7 @@ package com.vpolosov.trainee.mergexml.validators;
 
 import com.vpolosov.trainee.mergexml.aspect.Loggable;
 import com.vpolosov.trainee.mergexml.config.ConfigProperties;
+import com.vpolosov.trainee.mergexml.handler.exception.IncorrectMaxAmountException;
 import com.vpolosov.trainee.mergexml.handler.exception.IncorrectMinAmountException;
 import com.vpolosov.trainee.mergexml.handler.exception.IncorrectValueException;
 import com.vpolosov.trainee.mergexml.utils.DocumentUtil;
@@ -23,7 +24,7 @@ import static com.vpolosov.trainee.mergexml.utils.XmlTags.AMOUNT;
  */
 @Component
 @RequiredArgsConstructor
-public class MinAmountValidator implements Predicate<File> {
+public class AmountValidator implements Predicate<File> {
 
     /**
      * Свойства приложения.
@@ -40,6 +41,7 @@ public class MinAmountValidator implements Predicate<File> {
      *
      * @throws IncorrectValueException     если в файле не найдена сумма платежа или она некорректна.
      * @throws IncorrectMinAmountException если сумма платежа меньше минимально допустимой.
+     * @throws IncorrectMaxAmountException если сумма платежа больше максимально допустимой.
      */
     @Loggable
     @Override
@@ -56,6 +58,11 @@ public class MinAmountValidator implements Predicate<File> {
         if (amount.compareTo(configProperties.getMinPayment()) < BigInteger.ZERO.intValue()) {
             throw new IncorrectMinAmountException(
                 "В файле %s сумма платежа не соответствует минимальной".formatted(xmlFile.getName())
+            );
+        }
+        if (amount.compareTo(configProperties.getMaxPayment()) > BigInteger.ZERO.intValue()) {
+            throw new IncorrectMaxAmountException(
+                "В файле %s сумма платежа не соответствует максимальной".formatted(xmlFile.getName())
             );
         }
         return true;
