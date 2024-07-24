@@ -113,6 +113,7 @@ jobs:
       - name: JaCoCo Code Coverage Report
         id: jacoco_reporter
         uses: PavanMudigonda/jacoco-reporter@v5.0
+        if: success() || failure()
         with:
          coverage_results_path: target/site/jacoco/jacoco.xml
          coverage_report_name: Coverage
