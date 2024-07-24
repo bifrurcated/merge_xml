@@ -51,7 +51,7 @@ class PaymentDateValidatorTest {
         paymentDateValidator = Mockito.spy(new PaymentDateValidator(clock, timeConfig.localDateFormat(), documentUtil));
         Path xmlTestFiles = Paths.get("src/test/resources/test_fixtures/Ok");
         String path = xmlTestFiles.toAbsolutePath().toString();
-        List<File> xmlFiles = fileUtil.listXml(path);
+        List<File> xmlFiles = fileUtil.listXml(path, 1, 10);
 
         for(var xmlFile : xmlFiles) {
             paymentDateValidator.test(xmlFile);
@@ -70,7 +70,7 @@ class PaymentDateValidatorTest {
         paymentDateValidator = Mockito.spy(new PaymentDateValidator(clock, timeConfig.localDateFormat(), documentUtil));
         Path xmlTestFiles = Paths.get("src/test/resources/test_fixtures/Ok");
         String path = xmlTestFiles.toAbsolutePath().toString();
-        List<File> xmlFiles = fileUtil.listXml(path);
+        List<File> xmlFiles = fileUtil.listXml(path,1, 10);
 
         for (var xmlFile : xmlFiles) {
             assertThrows(IncorrectDateException.class, () -> paymentDateValidator.test(xmlFile));

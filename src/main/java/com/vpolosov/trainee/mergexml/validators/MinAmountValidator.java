@@ -1,6 +1,7 @@
 package com.vpolosov.trainee.mergexml.validators;
 
 import com.vpolosov.trainee.mergexml.aspect.Loggable;
+import com.vpolosov.trainee.mergexml.config.ConfigProperties;
 import com.vpolosov.trainee.mergexml.handler.exception.IncorrectMinAmountException;
 import com.vpolosov.trainee.mergexml.handler.exception.IncorrectValueException;
 import com.vpolosov.trainee.mergexml.utils.DocumentUtil;
@@ -25,9 +26,9 @@ import static com.vpolosov.trainee.mergexml.utils.XmlTags.AMOUNT;
 public class MinAmountValidator implements Predicate<File> {
 
     /**
-     * Константное значение допустимой минимальной суммы платежа.
+     * Свойства приложения.
      */
-    private static final BigDecimal MIN_AMOUNT = new BigDecimal(10);
+    private final ConfigProperties configProperties;
 
     /**
      * Вспомогательный класс для работы с {@link Document}.
@@ -38,8 +39,7 @@ public class MinAmountValidator implements Predicate<File> {
      * {@inheritDoc}
      *
      * @throws IncorrectValueException     если в файле не найдена сумма платежа или она некорректна.
-     * @throws IncorrectMinAmountException если сумма платежа меньше минимально допустимой
-     *                                     {@link MinAmountValidator#MIN_AMOUNT}.
+     * @throws IncorrectMinAmountException если сумма платежа меньше минимально допустимой.
      */
     @Loggable
     @Override
@@ -53,7 +53,7 @@ public class MinAmountValidator implements Predicate<File> {
                 "В файле %s не найдена сумма платежа или сумма некорректна".formatted(xmlFile.getName())
             );
         }
-        if (amount.compareTo(MIN_AMOUNT) < BigInteger.ZERO.intValue()) {
+        if (amount.compareTo(configProperties.getMinPayment()) < BigInteger.ZERO.intValue()) {
             throw new IncorrectMinAmountException(
                 "В файле %s сумма платежа не соответствует минимальной".formatted(xmlFile.getName())
             );

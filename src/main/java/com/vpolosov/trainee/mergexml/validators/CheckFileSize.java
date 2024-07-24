@@ -1,6 +1,8 @@
 package com.vpolosov.trainee.mergexml.validators;
 
 import com.vpolosov.trainee.mergexml.aspect.Loggable;
+import com.vpolosov.trainee.mergexml.config.ConfigProperties;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -11,12 +13,13 @@ import java.io.File;
  * @author Ali Takushinov
  */
 @Component
+@RequiredArgsConstructor
 public class CheckFileSize {
 
     /**
-     * Константное значение максимального размера файла.
+     * Свойства приложения.
      */
-    private static final long FILE_SIZE_LIMIT = 500L * 1024;
+    private final ConfigProperties configProperties;
 
     /**
      * Проверяет файл на превышение лимитного размера.
@@ -26,6 +29,6 @@ public class CheckFileSize {
      */
     @Loggable
     public boolean isMoreThanFiveKb(File file) {
-        return file.length() > FILE_SIZE_LIMIT;
+        return file.length() > configProperties.getMaxResultFileWeight().toBytes();
     }
 }

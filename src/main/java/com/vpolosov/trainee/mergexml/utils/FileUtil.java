@@ -6,6 +6,7 @@ import com.vpolosov.trainee.mergexml.handler.exception.FileNotFoundException;
 import com.vpolosov.trainee.mergexml.handler.exception.IllegalSizeException;
 import com.vpolosov.trainee.mergexml.handler.exception.NotExactlyOneXsdFileException;
 import com.vpolosov.trainee.mergexml.handler.exception.NotExactlyTenFilesException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -26,6 +27,7 @@ import static com.vpolosov.trainee.mergexml.utils.Constant.FIRST_ELEMENT;
  * @author Maksim Litvinenko
  */
 @Component
+@RequiredArgsConstructor
 public class FileUtil {
 
     /**
@@ -39,11 +41,6 @@ public class FileUtil {
     private static final String XSD_EXTENSION = ".xsd";
 
     /**
-     * Количество XML файлов.
-     */
-    private static final int XML_FILES_COUNT = 10;
-
-    /**
      * Количество XSD файлов.
      */
     private static final int XSD_FILES_COUNT = 1;
@@ -51,18 +48,20 @@ public class FileUtil {
     /**
      * Возвращает список XML файлов.
      *
-     * @param location путь до директории с XML файлами.
+     * @param location     путь до директории с XML файлами.
+     * @param minCountFile минимальное количество файлов.
+     * @param maxCountFile максимальное количество файлов.
      * @return список XML файлов.
      * @throws NotExactlyTenFilesException если количество XML файлов в директории не равно 10.
      * @throws RuntimeException            если при открытии каталога возникает ошибка ввода-вывода.
      */
     @Loggable
-    public List<File> listXml(String location) {
+    public List<File> listXml(String location, int minCountFile, int maxCountFile) {
         try (var pathStream = Files.list(Path.of(location))) {
-            return files(pathStream, XML_EXTENSION, XML_FILES_COUNT);
+            return files(pathStream, XML_EXTENSION, minCountFile, maxCountFile);
         } catch (IllegalSizeException e) {
             throw new NotExactlyTenFilesException(
-                "There are more than %s xml files, or the files are missing".formatted(XML_FILES_COUNT)
+                "There are more than %s xml files, or the files are missing".formatted(maxCountFile)
             );
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -80,7 +79,7 @@ public class FileUtil {
     @Loggable
     public File xsd(String location) {
         try (var pathStream = Files.list(Path.of(location))) {
-            return files(pathStream, XSD_EXTENSION, XSD_FILES_COUNT).get(FIRST_ELEMENT);
+            return files(pathStream, XSD_EXTENSION, XSD_FILES_COUNT, XSD_FILES_COUNT).get(FIRST_ELEMENT);
         } catch (IllegalSizeException e) {
             throw new NotExactlyOneXsdFileException("There are not exactly 1 xsd files");
         } catch (IOException e) {
@@ -93,25 +92,26 @@ public class FileUtil {
      *
      * @param pathStream    поток файловых путей.
      * @param extensionFile фильтр указывающий на расширение файлов.
-     * @param size          определённое значение файлов.
+     * @param minCountFile  минимальное количество файлов.
+     * @param maxCountFile  максимальное количество файлов.
      * @return список файлов определенного расширения и размера.
      * @throws IllegalSizeException при недопустимом размере.
      */
     @Loggable
-    public List<File> files(Stream<Path> pathStream, String extensionFile, int size) {
+    public List<File> files(Stream<Path> pathStream, String extensionFile, int minCountFile, int maxCountFile) {
         var xmlList = pathStream
             .filter(path -> path.getFileName().toString().endsWith(extensionFile))
             .map(Path::toFile)
             .collect(ArrayList<File>::new,
                 (list, file) -> {
                     list.add(file);
-                    if (list.size() > size) {
+                    if (list.size() > maxCountFile) {
                         throw new IllegalSizeException();
                     }
                 },
                 ArrayList::addAll);
 
-        if (xmlList.size() != size) {
+        if (xmlList.size() < minCountFile) {
             throw new IllegalSizeException();
         }
         return xmlList;

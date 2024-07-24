@@ -1,6 +1,7 @@
 package com.vpolosov.trainee.mergexml.validators;
 
 import com.vpolosov.trainee.mergexml.aspect.Loggable;
+import com.vpolosov.trainee.mergexml.config.ConfigProperties;
 import com.vpolosov.trainee.mergexml.handler.exception.InvalidCurrencyCodeValueException;
 import com.vpolosov.trainee.mergexml.utils.DocumentUtil;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +25,9 @@ import static com.vpolosov.trainee.mergexml.utils.XmlTags.CURRCODE;
 public class CurrentCodeValidator implements Predicate<File> {
 
     /**
-     * Константное значение допустимого кода валюты.
+     * Свойства приложения.
      */
-    private static final String VALID_CURRCODE = "810";
+    private final ConfigProperties configProperties;
 
     /**
      * Вспомогательный класс для работы с {@link Document}.
@@ -36,8 +37,7 @@ public class CurrentCodeValidator implements Predicate<File> {
     /**
      * {@inheritDoc}
      *
-     * @throws InvalidCurrencyCodeValueException когда значение кода валюты не соответствует
-     *                                           {@link CurrentCodeValidator#VALID_CURRCODE}.
+     * @throws InvalidCurrencyCodeValueException когда значение кода валюты не соответствует.
      */
     @Loggable
     @Override
@@ -45,8 +45,9 @@ public class CurrentCodeValidator implements Predicate<File> {
         Document document = documentUtil.parse(file);
         NodeList nodeListWithCurrCode = document.getElementsByTagName(CURRCODE);
         String currCode = nodeListWithCurrCode.item(FIRST_ELEMENT).getTextContent();
-        if (!currCode.equals(VALID_CURRCODE)) {
-            throw new InvalidCurrencyCodeValueException("Допустимое значение кода валюты " + VALID_CURRCODE);
+        var validCurrCode = String.valueOf(configProperties.getCurrencyCode());
+        if (!currCode.equals(validCurrCode)) {
+            throw new InvalidCurrencyCodeValueException("Допустимое значение кода валюты " + validCurrCode);
         }
         return true;
     }

@@ -39,7 +39,7 @@ class SinglePayerValidatorTest {
         var singlePayerValidator = spy(new SinglePayerValidator(documentUtil));
         var xmlTestFiles = Paths.get("src/test/resources/test_fixtures/Ok");
         var path = xmlTestFiles.toAbsolutePath().toString();
-        var xmlFiles = fileUtil.listXml(path);
+        var xmlFiles = fileUtil.listXml(path, 1, 10);
 
         var payer = documentUtil.getFirstElementByTagName(xmlFiles.get(0), PAYER);
         for (var xmlFile : xmlFiles) {
@@ -55,7 +55,7 @@ class SinglePayerValidatorTest {
         var singlePayerValidator = spy(new SinglePayerValidator(documentUtil));
         var xmlTestFiles = Paths.get("src/test/resources/test_fixtures/sourceXml/DifferentPayer");
         var path = xmlTestFiles.toAbsolutePath().toString();
-        var xmlFiles = fileUtil.listXml(path);
+        var xmlFiles = fileUtil.listXml(path, 1, 10);
 
         var payer = documentUtil.getFirstElementByTagName(xmlFiles.get(0), PAYER);
         for (int i = 1; i < xmlFiles.size(); i++) {
