@@ -1,6 +1,7 @@
 package com.vpolosov.trainee.mergexml.service;
 
 import com.vpolosov.trainee.mergexml.aspect.Loggable;
+import com.vpolosov.trainee.mergexml.config.ConfigProperties;
 import com.vpolosov.trainee.mergexml.handler.exception.MoreFiveHundredKbException;
 import com.vpolosov.trainee.mergexml.utils.DocumentUtil;
 import com.vpolosov.trainee.mergexml.utils.FileUtil;
@@ -66,6 +67,10 @@ public class MergeService {
      */
     private final Validators validators;
 
+    /**
+     * Свойства приложения.
+     */
+    private final ConfigProperties configProperties;
 
     /**
      * Объединяет XML файлы в каталоге для создания платёжного документа.
@@ -76,7 +81,11 @@ public class MergeService {
      */
     @Loggable
     public Document merge(String path) {
-        List<File> xmlFiles = fileUtil.listXml(path);
+        List<File> xmlFiles = fileUtil.listXml(
+            path,
+            configProperties.getMinCountFile(),
+            configProperties.getMaxCountFile()
+        );
         File xsdFile = fileUtil.xsd(path);
 
         var payer = documentUtil.getFirstElementByTagName(xmlFiles.get(FIRST_ELEMENT), PAYER);
@@ -103,7 +112,7 @@ public class MergeService {
         targetDocument.normalize();
         DOMSource dom = new DOMSource(targetDocument);
 
-        var total = new File(path, "./Total.xml");
+        var total = new File(path, configProperties.getFileName());
         transformerUtil.transform(dom, new StreamResult(total));
 
         if (validators.checkFileSize().isMoreThanFiveKb(total)) {
