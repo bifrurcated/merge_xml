@@ -1,15 +1,13 @@
-package com.vpolosov.trainee.mergexml.validators.impl;
+package com.vpolosov.trainee.mergexml.validators;
 
 import com.vpolosov.trainee.mergexml.config.XmlConfig;
 import com.vpolosov.trainee.mergexml.handler.exception.DifferentPayerException;
 import com.vpolosov.trainee.mergexml.utils.FileUtil;
 import com.vpolosov.trainee.mergexml.utils.DocumentUtil;
-import com.vpolosov.trainee.mergexml.validators.SinglePayerValidator;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.verification.VerificationMode;
 
 import java.io.File;
 import java.nio.file.Paths;

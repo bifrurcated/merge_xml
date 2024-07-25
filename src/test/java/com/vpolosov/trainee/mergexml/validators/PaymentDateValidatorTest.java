@@ -1,11 +1,10 @@
-package com.vpolosov.trainee.mergexml.validators.impl;
+package com.vpolosov.trainee.mergexml.validators;
 
 import com.vpolosov.trainee.mergexml.config.TimeConfig;
 import com.vpolosov.trainee.mergexml.config.XmlConfig;
 import com.vpolosov.trainee.mergexml.handler.exception.IncorrectDateException;
 import com.vpolosov.trainee.mergexml.utils.FileUtil;
 import com.vpolosov.trainee.mergexml.utils.DocumentUtil;
-import com.vpolosov.trainee.mergexml.validators.PaymentDateValidator;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

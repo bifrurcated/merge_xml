@@ -11,7 +11,7 @@
             <CBCCODE/>
             <CURRCODE>810</CURRCODE>
             <CUSTID>200000126</CUSTID>
-            <IP>10.223.89.62</IP>
+            <IP>.223.89.62</IP>
             <MAC/>
             <DOCDATEPARAM1>0</DOCDATEPARAM1>
             <DOCDATEPARAM2/>
@@ -25,12 +25,12 @@
             <PAYTYPEPARAM/>
             <PAYUNTIL/>
             <PAYER>ООО "САРРАС"</PAYER>
-            <PAYERACCOUNT>40702810000090001443</PAYERACCOUNT>
-            <PAYERBIC>040702788</PAYERBIC>
-            <PAYERBANKNAME>ФИЛИАЛ БАНКА ВТБ (ПАО) В Г. СТАВРОПОЛЕ, г. Ставрополь</PAYERBANKNAME>
+            <PAYERACCOUNT>40702810501550000110</PAYERACCOUNT>
+            <PAYERBIC>044525411</PAYERBIC>
+            <PAYERBANKNAME>Филиал "Центральный" Банка ВТБ (ПАО), г. Москва</PAYERBANKNAME>
             <PAYERBANKTYPE/>
-            <PAYERCORRACCOUNT>30101810100000000788</PAYERCORRACCOUNT>
-            <PAYERINN>7703781110</PAYERINN>
+            <PAYERCORRACCOUNT>30101810145250000411</PAYERCORRACCOUNT>
+            <PAYERINN>5001087596</PAYERINN>
             <PAYERKPP>876543210</PAYERKPP>
             <PAYERPLACE/>
             <PAYERPLACETYPE/>
