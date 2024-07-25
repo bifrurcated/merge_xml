@@ -64,4 +64,9 @@ public class XmlTags {
      * Код валюты.
      */
     public static final String CURRCODE = "CURRCODE";
+
+    /**
+     * IP адрес.
+     */
+    public static final String IP = "IP";
 }
