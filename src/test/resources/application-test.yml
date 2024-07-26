@@ -7,3 +7,6 @@ spring:
   liquibase:
     enabled: true
     contexts: test
+
+merge-xml:
+  config-path: config.json

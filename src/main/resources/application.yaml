@@ -21,4 +21,4 @@ spring:
       mode: always
 
 merge-xml:
-  config-path: ${MERGE_XML_CONFIG_PATH}
+  config-path: ${MERGE_XML_CONFIG_PATH:config.json}
