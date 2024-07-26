@@ -1,0 +1,10 @@
+{
+  "currencyCode": 810,
+  "DUEDATE": "10d",
+  "fileName": "Total.xml",
+  "maxCountFiles": 10,
+  "minCountFiles": 1,
+  "minPayment": 10,
+  "maxPayment": 100000,
+  "maxResultFileWeight": "500KB"
+}
