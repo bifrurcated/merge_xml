@@ -36,8 +36,8 @@ class AmountValidatorTest {
         fileUtil = new FileUtil();
         documentUtil = new DocumentUtil(new XmlConfig().documentBuilder());
         configProperties = new ConfigProperties();
-        configProperties.setMinCountFile(1);
-        configProperties.setMaxCountFile(10);
+        configProperties.setMinCountFiles(1);
+        configProperties.setMaxCountFiles(10);
         configProperties.setMinPayment(new BigDecimal("10"));
         configProperties.setMaxPayment(new BigDecimal("1000000"));
     }
@@ -48,7 +48,7 @@ class AmountValidatorTest {
         var minAmountValidator = Mockito.spy(new AmountValidator(configProperties, documentUtil));
         var xmlTestFiles = Paths.get("src/test/resources/test_fixtures/Ok");
         var path = xmlTestFiles.toAbsolutePath().toString();
-        var xmlFiles = fileUtil.listXml(path, configProperties.getMinCountFile(), configProperties.getMaxCountFile());
+        var xmlFiles = fileUtil.listXml(path, configProperties.getMinCountFiles(), configProperties.getMaxCountFiles());
 
         for (var xmlFile : xmlFiles) {
             minAmountValidator.test(xmlFile);
@@ -63,7 +63,7 @@ class AmountValidatorTest {
         var minAmountValidator = spy(new AmountValidator(configProperties, documentUtil));
         var xmlTestFiles = Paths.get("src/test/resources/test_fixtures/sourceXml/MinAmount");
         var path = xmlTestFiles.toAbsolutePath().toString();
-        var xmlFiles = fileUtil.listXml(path, configProperties.getMinCountFile(), configProperties.getMaxCountFile());
+        var xmlFiles = fileUtil.listXml(path, configProperties.getMinCountFiles(), configProperties.getMaxCountFiles());
 
         assertThrows(IncorrectMinAmountException.class, () -> xmlFiles.forEach(minAmountValidator::test));
     }
@@ -74,7 +74,7 @@ class AmountValidatorTest {
         var minAmountValidator = spy(new AmountValidator(configProperties, documentUtil));
         var xmlTestFiles = Paths.get("src/test/resources/test_fixtures/sourceXml/NotCorrectAmount");
         var path = xmlTestFiles.toAbsolutePath().toString();
-        var xmlFiles = fileUtil.listXml(path, configProperties.getMinCountFile(), configProperties.getMaxCountFile());
+        var xmlFiles = fileUtil.listXml(path, configProperties.getMinCountFiles(), configProperties.getMaxCountFiles());
 
         assertThrows(IncorrectValueException.class, () -> xmlFiles.forEach(minAmountValidator::test));
     }
@@ -85,7 +85,7 @@ class AmountValidatorTest {
         var minAmountValidator = spy(new AmountValidator(configProperties, documentUtil));
         var xmlTestFiles = Paths.get("src/test/resources/test_fixtures/sourceXml/MaxAmount");
         var path = xmlTestFiles.toAbsolutePath().toString();
-        var xmlFiles = fileUtil.listXml(path, configProperties.getMinCountFile(), configProperties.getMaxCountFile());
+        var xmlFiles = fileUtil.listXml(path, configProperties.getMinCountFiles(), configProperties.getMaxCountFiles());
 
         assertThrows(IncorrectMaxAmountException.class, () -> xmlFiles.forEach(minAmountValidator::test));
     }

@@ -3,14 +3,14 @@
 
 Для запуска необходимо отредактировать конфигурацию:
 
-1. Ставим галочку Modify options - Ovveride configuration properties
+1. Ставим галочку Modify options -> Environment variables
 
-![image](https://github.com/South12309/merge_xml/assets/26357330/ac0b8ea1-32bb-40e3-a8cc-6987442ff928)
+![image](images/idea_open_env.png)
 
 
-2. Открывается таблица в которой мы заполняем параметры подключения к нашей БД
+2. В появившемся поле нажимаем на иконку листа "Edit environment variables" в которой мы заполняем параметры подключения к нашей БД и путь до конфигурационного файла.
 
-![image](https://github.com/South12309/merge_xml/assets/26357330/57edeba8-ede1-43eb-af94-5752bf7c7004)
+![image](images/idea_env_options.png)
 
 3. Запускаем приложение
 
