@@ -30,7 +30,9 @@ public class XmlConfig {
      */
     @Bean
     public DocumentBuilder documentBuilder() throws ParserConfigurationException {
-        return DocumentBuilderFactory.newDefaultInstance().newDocumentBuilder();
+        var documentBuilderFactory = DocumentBuilderFactory.newDefaultInstance();
+        documentBuilderFactory.setNamespaceAware(true);
+        return documentBuilderFactory.newDocumentBuilder();
     }
 
     /**
