@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 
-import java.io.File;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -24,7 +23,7 @@ import static com.vpolosov.trainee.mergexml.utils.XmlTags.DOCUMENTDATE;
  */
 @Component
 @RequiredArgsConstructor
-public class PaymentDateValidator implements Predicate<File> {
+public class PaymentDateValidator implements Predicate<Document> {
 
     /**
      * Часы для корректировки времени.
@@ -48,9 +47,9 @@ public class PaymentDateValidator implements Predicate<File> {
      */
     @Loggable
     @Override
-    public boolean test(File xml) {
+    public boolean test(Document document) {
         var nowDate = LocalDate.now(clock);
-        var dateStr = documentUtil.getFirstElementByTagName(xml, DOCUMENTDATE);
+        var dateStr = documentUtil.getValueByTagName(document, DOCUMENTDATE);
         var date = LocalDate.parse(dateStr, localDateFormat);
         if (!date.equals(nowDate)) {
             throw new IncorrectDateException("Дата платежного документа должна быть равна текущей дате");

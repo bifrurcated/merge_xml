@@ -1,19 +1,17 @@
 package com.vpolosov.trainee.mergexml.validators;
 
 import com.vpolosov.trainee.mergexml.config.ConfigProperties;
-import com.vpolosov.trainee.mergexml.config.XmlConfig;
 import com.vpolosov.trainee.mergexml.handler.exception.IncorrectMaxAmountException;
 import com.vpolosov.trainee.mergexml.handler.exception.IncorrectMinAmountException;
 import com.vpolosov.trainee.mergexml.handler.exception.IncorrectValueException;
-import com.vpolosov.trainee.mergexml.utils.DocumentUtil;
-import com.vpolosov.trainee.mergexml.utils.FileUtil;
+import com.vpolosov.trainee.mergexml.test.TestUtil;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.w3c.dom.Document;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.nio.file.Paths;
 
@@ -26,18 +24,12 @@ import static org.mockito.Mockito.verify;
 @DisplayName("Тестирование валидатора для проверки минимальной суммы платежа")
 class AmountValidatorTest {
 
-    private FileUtil fileUtil;
-    private DocumentUtil documentUtil;
     private ConfigProperties configProperties;
 
     @BeforeEach
     @SneakyThrows
     void setUp() {
-        fileUtil = new FileUtil();
-        documentUtil = new DocumentUtil(new XmlConfig().documentBuilder());
         configProperties = new ConfigProperties();
-        configProperties.setMinCountFiles(1);
-        configProperties.setMaxCountFiles(10);
         configProperties.setMinPayment(new BigDecimal("10"));
         configProperties.setMaxPayment(new BigDecimal("1000000"));
     }
@@ -45,48 +37,44 @@ class AmountValidatorTest {
     @Test
     @DisplayName("Успешная валидация при корректной сумме платежа")
     void verify_whenMinAmountIsValid_thenSuccess() {
-        var minAmountValidator = Mockito.spy(new AmountValidator(configProperties, documentUtil));
-        var xmlTestFiles = Paths.get("src/test/resources/test_fixtures/Ok");
-        var path = xmlTestFiles.toAbsolutePath().toString();
-        var xmlFiles = fileUtil.listXml(path, configProperties.getMinCountFiles(), configProperties.getMaxCountFiles());
+        var minAmountValidator = Mockito.spy(new AmountValidator(configProperties, TestUtil.documentUtil()));
+        var pathToXmlFiles = Paths.get("src/test/resources/test_fixtures/Ok");
+        var documents = TestUtil.documents(pathToXmlFiles);
 
-        for (var xmlFile : xmlFiles) {
+        for (var xmlFile : documents) {
             minAmountValidator.test(xmlFile);
         }
 
-        verify(minAmountValidator, times(10)).test(any(File.class));
+        verify(minAmountValidator, times(10)).test(any(Document.class));
     }
 
     @Test
     @DisplayName("Исключение при некорректной минимальной сумме платежа")
     void verify_whenMinAmountIsNotValid_thenThrowException() {
-        var minAmountValidator = spy(new AmountValidator(configProperties, documentUtil));
-        var xmlTestFiles = Paths.get("src/test/resources/test_fixtures/sourceXml/MinAmount");
-        var path = xmlTestFiles.toAbsolutePath().toString();
-        var xmlFiles = fileUtil.listXml(path, configProperties.getMinCountFiles(), configProperties.getMaxCountFiles());
+        var minAmountValidator = spy(new AmountValidator(configProperties, TestUtil.documentUtil()));
+        var pathToXmlFiles = Paths.get("src/test/resources/test_fixtures/sourceXml/MinAmount");
+        var documents = TestUtil.documents(pathToXmlFiles);
 
-        assertThrows(IncorrectMinAmountException.class, () -> xmlFiles.forEach(minAmountValidator::test));
+        assertThrows(IncorrectMinAmountException.class, () -> documents.forEach(minAmountValidator::test));
     }
 
     @Test
     @DisplayName("Исключение при невалидном значении платежа")
     void verify_whenAmountIsNotValid_thenThrowException() {
-        var minAmountValidator = spy(new AmountValidator(configProperties, documentUtil));
-        var xmlTestFiles = Paths.get("src/test/resources/test_fixtures/sourceXml/NotCorrectAmount");
-        var path = xmlTestFiles.toAbsolutePath().toString();
-        var xmlFiles = fileUtil.listXml(path, configProperties.getMinCountFiles(), configProperties.getMaxCountFiles());
+        var minAmountValidator = spy(new AmountValidator(configProperties, TestUtil.documentUtil()));
+        var pathToXmlFiles = Paths.get("src/test/resources/test_fixtures/sourceXml/NotCorrectAmount");
+        var documents = TestUtil.documents(pathToXmlFiles);
 
-        assertThrows(IncorrectValueException.class, () -> xmlFiles.forEach(minAmountValidator::test));
+        assertThrows(IncorrectValueException.class, () -> documents.forEach(minAmountValidator::test));
     }
 
     @Test
     @DisplayName("Исключение при некорректной максимальной сумме платежа")
     void verify_whenMaxAmountIsNotValid_thenThrowException() {
-        var minAmountValidator = spy(new AmountValidator(configProperties, documentUtil));
-        var xmlTestFiles = Paths.get("src/test/resources/test_fixtures/sourceXml/MaxAmount");
-        var path = xmlTestFiles.toAbsolutePath().toString();
-        var xmlFiles = fileUtil.listXml(path, configProperties.getMinCountFiles(), configProperties.getMaxCountFiles());
+        var minAmountValidator = spy(new AmountValidator(configProperties, TestUtil.documentUtil()));
+        var pathToXmlFiles = Paths.get("src/test/resources/test_fixtures/sourceXml/MaxAmount");
+        var documents = TestUtil.documents(pathToXmlFiles);
 
-        assertThrows(IncorrectMaxAmountException.class, () -> xmlFiles.forEach(minAmountValidator::test));
+        assertThrows(IncorrectMaxAmountException.class, () -> documents.forEach(minAmountValidator::test));
     }
 }

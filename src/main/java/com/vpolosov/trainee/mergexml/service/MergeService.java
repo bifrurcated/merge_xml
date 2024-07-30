@@ -88,12 +88,13 @@ public class MergeService {
         );
         File xsdFile = fileUtil.xsd(path);
 
-        var payer = documentUtil.getFirstElementByTagName(xmlFiles.get(FIRST_ELEMENT), PAYER);
+        var payer = documentUtil.getValueByTagName(xmlFiles.get(FIRST_ELEMENT), PAYER);
         Document targetDocument = documentUtil.create();
         var validator = validators.createValidator(xsdFile);
         xmlFiles.stream()
-            .filter(file -> validators.validate(file, validator, payer))
-            .peek(xmlFile -> loggerForUser.info("Файл {} прошел проверку.", xmlFile.getName()))
+            .map(documentUtil::parse)
+            .filter(document -> validators.validate(document, validator, payer))
+            .peek(document -> loggerForUser.info("Файл {} прошел проверку.", documentUtil.getFileName(document)))
             .forEach(xmlFile -> aggregateTotal(xmlFile, targetDocument));
 
         targetDocument.normalizeDocument();
@@ -125,12 +126,11 @@ public class MergeService {
     /**
      * Формирование общего документа с информацией о платёжных операциях.
      *
-     * @param xmlFile        содержит информацию о платёжной операции.
+     * @param document       содержит информацию о платёжной операции.
      * @param targetDocument конечный документ, в который объединяется информация о платёжных операциях.
      */
     @Loggable
-    private void aggregateTotal(File xmlFile, Document targetDocument) {
-        Document document = documentUtil.parse(xmlFile);
+    private void aggregateTotal(Document document, Document targetDocument) {
         document.getDocumentElement().normalize();
         if (targetDocument.getElementsByTagName(DOCUMENTS).getLength() == EMPTY_SIZE) {
             NodeList documentNodeList = document.getChildNodes();

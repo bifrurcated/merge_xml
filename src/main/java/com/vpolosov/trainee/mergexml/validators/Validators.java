@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.stereotype.Component;
+import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
@@ -38,31 +39,31 @@ public class Validators {
     /**
      * Список валидаторов с одним параметром для проверки XML файла.
      */
-    private final List<Predicate<File>> singleParamValidators;
+    private final List<Predicate<Document>> singleParamValidators;
 
     /**
      * Валидатор для проверки одного плательщика.
      */
-    private final BiPredicate<String, File> paymentValidator;
+    private final BiPredicate<String, Document> paymentValidator;
 
     /**
      * Валидатор для проверки XML файла по XSD схеме.
      */
-    private final BiPredicate<File, Validator> xmlValidator;
+    private final BiPredicate<Document, Validator> xmlValidator;
 
     /**
      * Прогоняет XML документ по всем валидаторам.
      *
-     * @param xmlFile   документ для объединения платежа.
+     * @param document  документ для объединения платежа.
      * @param validator проверяет схему документа платежа.
      * @param payer     плательщик.
      * @return true если все проверки прошли успешно иначе выбрасывает соответствующее исключение.
      */
     @Loggable
-    public boolean validate(File xmlFile, Validator validator, String payer) {
-        return xmlValidator.test(xmlFile, validator)
-            && singleParamValidators.stream().allMatch(predicate -> predicate.test(xmlFile))
-            && paymentValidator.test(payer, xmlFile);
+    public boolean validate(Document document, Validator validator, String payer) {
+        return xmlValidator.test(document, validator)
+            && singleParamValidators.stream().allMatch(predicate -> predicate.test(document))
+            && paymentValidator.test(payer, document);
     }
 
     /**
