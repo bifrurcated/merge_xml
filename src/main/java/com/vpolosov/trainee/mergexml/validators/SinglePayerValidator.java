@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 
-import java.io.File;
 import java.util.function.BiPredicate;
 
 import static com.vpolosov.trainee.mergexml.utils.XmlTags.PAYER;
@@ -19,7 +18,7 @@ import static com.vpolosov.trainee.mergexml.utils.XmlTags.PAYER;
  */
 @Component
 @RequiredArgsConstructor
-public class SinglePayerValidator implements BiPredicate<String, File> {
+public class SinglePayerValidator implements BiPredicate<String, Document> {
 
     /**
      * Вспомогательный класс для работы с {@link Document}.
@@ -33,8 +32,8 @@ public class SinglePayerValidator implements BiPredicate<String, File> {
      */
     @Loggable
     @Override
-    public boolean test(String payer, File xml) {
-        var nextPayer = documentUtil.getFirstElementByTagName(xml, PAYER);
+    public boolean test(String payer, Document document) {
+        var nextPayer = documentUtil.getValueByTagName(document, PAYER);
         if (!payer.equals(nextPayer)) {
             throw new DifferentPayerException(
                 "Данные файлы не могут быть объединены, т.к. обнаружены разные плательщики"

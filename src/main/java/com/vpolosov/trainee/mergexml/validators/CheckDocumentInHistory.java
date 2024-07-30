@@ -12,7 +12,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +29,7 @@ import static com.vpolosov.trainee.mergexml.utils.XmlTags.DOCREF;
  */
 @Component
 @RequiredArgsConstructor
-public class CheckDocumentInHistory implements Predicate<File> {
+public class CheckDocumentInHistory implements Predicate<Document> {
 
     /**
      * Сервис хранения истории объединённых платежей.
@@ -54,8 +53,8 @@ public class CheckDocumentInHistory implements Predicate<File> {
      */
     @Loggable
     @Override
-    public boolean test(File xmlFile) {
-        Map<String, String> docRefAndFileNameFromHistory = getLoadDateToBDFromHistory(xmlFile);
+    public boolean test(Document document) {
+        Map<String, String> docRefAndFileNameFromHistory = getLoadDateToBDFromHistory(document);
         if (!docRefAndFileNameFromHistory.isEmpty()) {
             StringBuilder message = new StringBuilder();
             for (var entry : docRefAndFileNameFromHistory.entrySet()) {
@@ -73,16 +72,16 @@ public class CheckDocumentInHistory implements Predicate<File> {
     /**
      * Возвращает историю совершённых платежей.
      *
-     * @param xmlFile документ с информацией о платеже.
+     * @param document документ с информацией о платеже.
      * @return историю платежей по переданному документу, иначе пустое значение.
      */
     @Loggable
-    private Map<String, String> getLoadDateToBDFromHistory(File xmlFile) {
+    private Map<String, String> getLoadDateToBDFromHistory(Document document) {
         Map<String, String> docRefsAndFileNames = new HashMap<>();
         Specification<History> spec = Specification.where(null);
 
-        String docRef = documentUtil.getFirstElementByTagName(xmlFile, DOCREF);
-        docRefsAndFileNames.put(docRef, xmlFile.getName());
+        String docRef = documentUtil.getValueByTagName(document, DOCREF);
+        docRefsAndFileNames.put(docRef, documentUtil.getFileName(document));
         spec = spec.or(HistorySpecifications.docRefEquals(docRef));
 
         List<History> histories = historyService.getHistoryListBySpec(spec);

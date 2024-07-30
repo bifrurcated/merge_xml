@@ -14,6 +14,7 @@ import java.io.IOException;
 
 import static com.vpolosov.trainee.mergexml.utils.Constant.EMPTY_SIZE;
 import static com.vpolosov.trainee.mergexml.utils.Constant.FIRST_ELEMENT;
+import static com.vpolosov.trainee.mergexml.utils.Constant.NEXT_ELEMENT;
 
 /**
  * Вспомогательный класс для работы с {@link Document}.
@@ -46,7 +47,7 @@ public class DocumentUtil {
     }
 
     /**
-     * Возвращает значение элемента из XML документа.
+     * Возвращает значение элемента из XML файла.
      *
      * @param xmlFile файл XML
      * @param tagName тег по которому будет происходить поиск.
@@ -54,13 +55,46 @@ public class DocumentUtil {
      * @throws XmlTagNotFoundException когда не удалось найти значение по тегу в XML документе.
      */
     @Loggable
-    public String getFirstElementByTagName(File xmlFile, String tagName) {
+    public String getValueByTagName(File xmlFile, String tagName) {
         var document = parse(xmlFile);
         var nodeList = document.getElementsByTagName(tagName);
         if (nodeList.getLength() == EMPTY_SIZE) {
             throw new XmlTagNotFoundException("Xml tag was not found in document");
         }
         return nodeList.item(FIRST_ELEMENT).getTextContent();
+    }
+
+    /**
+     * Возвращает значение элемента из XML документа.
+     *
+     * @param document XML документ.
+     * @param tagName  тег по которому будет происходить поиск.
+     * @return значение тега из XML документа.
+     * @throws XmlTagNotFoundException когда не удалось найти значение по тегу в XML документе.
+     */
+    @Loggable
+    public String getValueByTagName(Document document, String tagName) {
+        var nodeList = document.getElementsByTagName(tagName);
+        if (nodeList.getLength() == EMPTY_SIZE) {
+            throw new XmlTagNotFoundException("Xml tag was not found in document");
+        }
+        return nodeList.item(FIRST_ELEMENT).getTextContent();
+    }
+
+    /**
+     * Возвращает имя файла.
+     *
+     * @param document XML документ.
+     * @return имя файла.
+     */
+    public String getFileName(Document document) {
+        var documentURI = document.getDocumentURI();
+        int idx = documentURI.lastIndexOf("/");
+        String filename = documentURI;
+        if (idx >= EMPTY_SIZE) {
+            filename = documentURI.substring(idx + NEXT_ELEMENT);
+        }
+        return filename;
     }
 
     /**

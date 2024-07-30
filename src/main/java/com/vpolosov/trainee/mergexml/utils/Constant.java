@@ -15,9 +15,13 @@ public class Constant {
      */
     public static final int FIRST_ELEMENT = 0;
 
-
     /**
      * Константное значение для обозначения пустого списка или массива.
      */
     public static final int EMPTY_SIZE = 0;
+
+    /**
+     * Следующее значение.
+     */
+    public static final int NEXT_ELEMENT = 1;
 }

@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.function.Predicate;
@@ -24,7 +23,7 @@ import static com.vpolosov.trainee.mergexml.utils.XmlTags.AMOUNT;
  */
 @Component
 @RequiredArgsConstructor
-public class AmountValidator implements Predicate<File> {
+public class AmountValidator implements Predicate<Document> {
 
     /**
      * Свойства приложения.
@@ -45,24 +44,27 @@ public class AmountValidator implements Predicate<File> {
      */
     @Loggable
     @Override
-    public boolean test(File xmlFile) {
-        var amountStr = documentUtil.getFirstElementByTagName(xmlFile, AMOUNT);
+    public boolean test(Document document) {
+        var amountStr = documentUtil.getValueByTagName(document, AMOUNT);
         BigDecimal amount;
         try {
             amount = new BigDecimal(amountStr);
         } catch (Exception e) {
             throw new IncorrectValueException(
-                "В файле %s не найдена сумма платежа или сумма некорректна".formatted(xmlFile.getName())
+                "В файле %s не найдена сумма платежа или сумма некорректна"
+                    .formatted(documentUtil.getFileName(document))
             );
         }
         if (amount.compareTo(configProperties.getMinPayment()) < BigInteger.ZERO.intValue()) {
             throw new IncorrectMinAmountException(
-                "В файле %s сумма платежа не соответствует минимальной".formatted(xmlFile.getName())
+                "В файле %s сумма платежа не соответствует минимальной"
+                    .formatted(documentUtil.getFileName(document))
             );
         }
         if (amount.compareTo(configProperties.getMaxPayment()) > BigInteger.ZERO.intValue()) {
             throw new IncorrectMaxAmountException(
-                "В файле %s сумма платежа не соответствует максимальной".formatted(xmlFile.getName())
+                "В файле %s сумма платежа не соответствует максимальной"
+                    .formatted(documentUtil.getFileName(document))
             );
         }
         return true;

@@ -7,12 +7,9 @@ import com.vpolosov.trainee.mergexml.utils.DocumentUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
 
-import java.io.File;
 import java.util.function.Predicate;
 
-import static com.vpolosov.trainee.mergexml.utils.Constant.FIRST_ELEMENT;
 import static com.vpolosov.trainee.mergexml.utils.XmlTags.CURRCODE;
 
 /**
@@ -22,7 +19,7 @@ import static com.vpolosov.trainee.mergexml.utils.XmlTags.CURRCODE;
  */
 @Component
 @RequiredArgsConstructor
-public class CurrentCodeValidator implements Predicate<File> {
+public class CurrentCodeValidator implements Predicate<Document> {
 
     /**
      * Свойства приложения.
@@ -41,10 +38,8 @@ public class CurrentCodeValidator implements Predicate<File> {
      */
     @Loggable
     @Override
-    public boolean test(File file) {
-        Document document = documentUtil.parse(file);
-        NodeList nodeListWithCurrCode = document.getElementsByTagName(CURRCODE);
-        String currCode = nodeListWithCurrCode.item(FIRST_ELEMENT).getTextContent();
+    public boolean test(Document document) {
+        var currCode = documentUtil.getValueByTagName(document, CURRCODE);
         var validCurrCode = String.valueOf(configProperties.getCurrencyCode());
         if (!currCode.equals(validCurrCode)) {
             throw new InvalidCurrencyCodeValueException("Допустимое значение кода валюты " + validCurrCode);

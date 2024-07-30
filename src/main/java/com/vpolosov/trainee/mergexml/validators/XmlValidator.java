@@ -2,14 +2,15 @@ package com.vpolosov.trainee.mergexml.validators;
 
 import com.vpolosov.trainee.mergexml.aspect.Loggable;
 import com.vpolosov.trainee.mergexml.handler.exception.IncorrectXmlFileException;
+import com.vpolosov.trainee.mergexml.utils.DocumentUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
+import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import javax.xml.transform.stream.StreamSource;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.Validator;
-import java.io.File;
 import java.io.IOException;
 import java.util.function.BiPredicate;
 
@@ -22,12 +23,17 @@ import java.util.function.BiPredicate;
  */
 @Component
 @RequiredArgsConstructor
-public class XmlValidator implements BiPredicate<File, Validator> {
+public class XmlValidator implements BiPredicate<Document, Validator> {
 
     /**
      * Логирование для пользователя.
      */
     private final Logger loggerForUser;
+
+    /**
+     * Вспомогательный класс для работы с {@link Document}.
+     */
+    private final DocumentUtil documentUtil;
 
     /**
      * {@inheritDoc}
@@ -36,12 +42,13 @@ public class XmlValidator implements BiPredicate<File, Validator> {
      */
     @Loggable
     @Override
-    public boolean test(File xmlFile, Validator validator) {
+    public boolean test(Document document, Validator validator) {
         try {
-            validator.validate(new StreamSource(xmlFile));
+            validator.validate(new DOMSource(document));
         } catch (SAXException | IOException e) {
-            loggerForUser.error("Файл {} не прошел проверку.", xmlFile.getName());
-            throw new IncorrectXmlFileException("Invalid XML file with name: " + xmlFile.getName());
+            var fileName = documentUtil.getFileName(document);
+            loggerForUser.error("Файл {} не прошел проверку.", fileName);
+            throw new IncorrectXmlFileException("Invalid XML file with name: " + fileName);
         }
         return true;
     }

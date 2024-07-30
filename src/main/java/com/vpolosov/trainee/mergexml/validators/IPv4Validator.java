@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 
-import java.io.File;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -19,7 +18,7 @@ import static com.vpolosov.trainee.mergexml.utils.XmlTags.IP;
  */
 @Component
 @RequiredArgsConstructor
-public class IPv4Validator implements Predicate<File> {
+public class IPv4Validator implements Predicate<Document> {
 
     /**
      * Regexp паттерн для проверки IPv4.
@@ -39,8 +38,8 @@ public class IPv4Validator implements Predicate<File> {
      * @throws InvalidIPv4Exception когда IP адрес не соответствует формату IPv4.
      */
     @Override
-    public boolean test(File file) {
-        var ipv4 = documentUtil.getFirstElementByTagName(file, IP);
+    public boolean test(Document document) {
+        var ipv4 = documentUtil.getValueByTagName(document, IP);
         if (IPV4_REGEXP.matcher(ipv4).matches()) {
             return true;
         }
