@@ -21,11 +21,4 @@ spring:
       mode: always
 
 merge-xml:
-  currency-code: 810
-  due-date: 10d
-  file-name: Total.xml
-  max-count-file: 10
-  min-count-file: 1
-  min-payment: 10
-  max-payment: 999999999999.99
-  max-result-file-weight: 500KB
+  config-path: ${MERGE_XML_CONFIG_PATH:config.json}

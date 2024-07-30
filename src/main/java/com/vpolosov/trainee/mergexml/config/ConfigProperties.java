@@ -1,8 +1,9 @@
 package com.vpolosov.trainee.mergexml.config;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.unit.DataSize;
 
 import java.math.BigDecimal;
@@ -15,7 +16,6 @@ import java.time.Duration;
  */
 @Getter
 @Setter
-@ConfigurationProperties(prefix = "merge-xml")
 public class ConfigProperties {
 
     /**
@@ -26,6 +26,8 @@ public class ConfigProperties {
     /**
      * Срок оплаты.
      */
+    @JsonDeserialize(using = DueDateDeserializer.class)
+    @JsonProperty("DUEDATE")
     private Duration dueDate;
 
     /**
@@ -36,12 +38,12 @@ public class ConfigProperties {
     /**
      * Максимальное количество файлов.
      */
-    private Integer maxCountFile;
+    private Integer maxCountFiles;
 
     /**
      * Минимальное количество файлов.
      */
-    private Integer minCountFile;
+    private Integer minCountFiles;
 
     /**
      * Минимальный платёж.
@@ -56,5 +58,6 @@ public class ConfigProperties {
     /**
      * Максимальный размер одного файла.
      */
+    @JsonDeserialize(using = DataSizeDeserializer.class)
     private DataSize maxResultFileWeight;
 }

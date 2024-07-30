@@ -83,8 +83,8 @@ public class MergeService {
     public Document merge(String path) {
         List<File> xmlFiles = fileUtil.listXml(
             path,
-            configProperties.getMinCountFile(),
-            configProperties.getMaxCountFile()
+            configProperties.getMinCountFiles(),
+            configProperties.getMaxCountFiles()
         );
         File xsdFile = fileUtil.xsd(path);
 
