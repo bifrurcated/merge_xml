@@ -2,6 +2,7 @@ package com.vpolosov.trainee.mergexml.controller;
 
 import com.vpolosov.trainee.mergexml.config.ConfigProperties;
 import com.vpolosov.trainee.mergexml.repository.HistoryRepository;
+import com.vpolosov.trainee.mergexml.utils.FileUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,6 +47,15 @@ public class MergeControllerIntegrationTests {
     @Autowired
     private HistoryRepository historyRepository;
 
+    @Autowired
+    private FileUtil fileUtil;
+
+    @Autowired
+    private Clock clock;
+
+    @Autowired
+    private DateTimeFormatter totalTimeFormat;
+
     private static Path getFixturesPath() {
         return Paths.get("src/test/resources/test_fixtures/sourceXml/InvalidCurrCode")
             .toAbsolutePath().normalize();
@@ -81,7 +91,8 @@ public class MergeControllerIntegrationTests {
             )
             .andExpect(status().isOk());
 
-        var pathToTotalFile = Path.of(path, configProperties.getFileName());
+        var fileName = fileUtil.fileNameWithTime(configProperties.getFileName(), clock, totalTimeFormat);
+        var pathToTotalFile = Path.of(path, fileName);
         if (Files.exists(pathToTotalFile)) {
             Files.delete(pathToTotalFile);
         }

@@ -19,7 +19,9 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -73,6 +75,16 @@ public class MergeService {
     private final ConfigProperties configProperties;
 
     /**
+     * Часы для корректировки времени.
+     */
+    private final Clock clock;
+
+    /**
+     * Парсер для результирующего файла.
+     */
+    private final DateTimeFormatter totalTimeFormat;
+
+    /**
      * Объединяет XML файлы в каталоге для создания платёжного документа.
      *
      * @param path путь до каталога с платёжными документами.
@@ -113,7 +125,8 @@ public class MergeService {
         targetDocument.normalize();
         DOMSource dom = new DOMSource(targetDocument);
 
-        var total = new File(path, configProperties.getFileName());
+        var fileName = fileUtil.fileNameWithTime(configProperties.getFileName(), clock, totalTimeFormat);
+        var total = new File(path, fileName);
         transformerUtil.transform(dom, new StreamResult(total));
 
         if (validators.checkFileSize().isMoreThanFiveKb(total)) {

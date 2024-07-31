@@ -69,4 +69,19 @@ public class XmlTags {
      * IP адрес.
      */
     public static final String IP = "IP";
+
+    /**
+     * Код программ доходов бюджетов.
+     */
+    public static final String CODEREV = "CODEREV";
+
+    /**
+     * Основание платежа.
+     */
+    public static final String PAYGRNDPARAM = "PAYGRNDPARAM";
+
+    /**
+     * Тип платежа.
+     */
+    public static final String PAYTYPEPARAM = "PAYTYPEPARAM";
 }
