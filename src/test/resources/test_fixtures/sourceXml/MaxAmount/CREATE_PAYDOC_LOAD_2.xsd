@@ -221,6 +221,16 @@
                         </xsd:restriction>
                       </xsd:simpleType>
                     </xsd:element>
+                    <xsd:element name="CODEREV">
+                      <xsd:annotation>
+                        <xsd:documentation xml:lang="ru">Код программ доходов бюджетов</xsd:documentation>
+                      </xsd:annotation>
+                      <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                          <xsd:maxLength value="1"/>
+                        </xsd:restriction>
+                      </xsd:simpleType>
+                    </xsd:element>
                     <xsd:element name="OPERTYPE">
                       <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
@@ -229,6 +239,9 @@
                       </xsd:simpleType>
                     </xsd:element>
                     <xsd:element name="PAYGRNDPARAM">
+                      <xsd:annotation>
+                        <xsd:documentation xml:lang="ru">Показатель основания платежа</xsd:documentation>
+                      </xsd:annotation>
                       <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
                           <xsd:maxLength value="2"/>
@@ -236,6 +249,29 @@
                       </xsd:simpleType>
                     </xsd:element>
                     <xsd:element name="PAYTYPEPARAM">
+                      <xsd:annotation>
+                        <xsd:documentation xml:lang="ru">Показатель типа платежа</xsd:documentation>
+                      </xsd:annotation>
+                      <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                          <xsd:maxLength value="2"/>
+                        </xsd:restriction>
+                      </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="DATEBILLON">
+                      <xsd:annotation>
+                        <xsd:documentation xml:lang="ru">Дата выставления счета</xsd:documentation>
+                      </xsd:annotation>
+                      <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                          <xsd:pattern value="([\d]{2}\.[\d]{2}\.[\d]{4})|()"/>
+                        </xsd:restriction>
+                      </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="DUEDATA" default="10">
+                      <xsd:annotation>
+                        <xsd:documentation xml:lang="ru">Срок оплаты</xsd:documentation>
+                      </xsd:annotation>
                       <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
                           <xsd:maxLength value="2"/>
@@ -243,6 +279,9 @@
                       </xsd:simpleType>
                     </xsd:element>
                     <xsd:element name="PAYUNTIL">
+                      <xsd:annotation>
+                        <xsd:documentation xml:lang="ru">Дата, до которой нужно оплатить</xsd:documentation>
+                      </xsd:annotation>
                       <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
                           <xsd:pattern value="([\d]{2}\.[\d]{2}\.[\d]{4})|()"/>
@@ -614,11 +653,3 @@
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>
-
-
-
-
-
-
-
-

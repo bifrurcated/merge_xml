@@ -4,8 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.Clock;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -27,6 +25,16 @@ public class TimeConfig {
     }
 
     /**
+     * Создаёт бин для формата даты результирующего файла {@code Total}.
+     *
+     * @return возвращает парсер для результирующего файла.
+     */
+    @Bean
+    public DateTimeFormatter totalTimeFormat() {
+        return DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm-ss");
+    }
+
+    /**
      * Создаёт бин определяющий Часы, обеспечивающие доступ к текущему моменту,
      * дате и времени с использованием часового пояса.
      *
@@ -34,10 +42,6 @@ public class TimeConfig {
      */
     @Bean
     public Clock clock() {
-        var fixedSameDate = LocalDate.parse("22.02.2024", localDateFormat())
-            .atStartOfDay()
-            .toInstant(ZoneOffset.UTC);
-        return Clock.fixed(fixedSameDate, ZoneOffset.UTC);
-        //return Clock.systemUTC();
+        return Clock.systemUTC();
     }
 }

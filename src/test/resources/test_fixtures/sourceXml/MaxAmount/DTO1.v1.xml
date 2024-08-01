@@ -20,9 +20,12 @@
             <DOCNUMPARAM2>0</DOCNUMPARAM2>
             <GROUND>В том числе НДС 20% - 2.00</GROUND>
             <OKATOCODE>0</OKATOCODE>
+            <CODEREV>1</CODEREV>
             <OPERTYPE>01</OPERTYPE>
-            <PAYGRNDPARAM>0</PAYGRNDPARAM>
-            <PAYTYPEPARAM/>
+            <PAYGRNDPARAM>ТП</PAYGRNDPARAM>
+            <PAYTYPEPARAM>НС</PAYTYPEPARAM>
+            <DATEBILLON>12.07.2024</DATEBILLON>
+            <DUEDATA>10</DUEDATA>
             <PAYUNTIL/>
             <PAYER>ООО "САРРАС"</PAYER>
             <PAYERACCOUNT>40702810000090001443</PAYERACCOUNT>

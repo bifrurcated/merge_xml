@@ -1,5 +1,6 @@
 package com.vpolosov.trainee.mergexml.validators;
 
+import com.vpolosov.trainee.mergexml.aspect.Loggable;
 import com.vpolosov.trainee.mergexml.handler.exception.InvalidIPv4Exception;
 import com.vpolosov.trainee.mergexml.utils.DocumentUtil;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,7 @@ public class IPv4Validator implements Predicate<Document> {
      * @throws InvalidIPv4Exception когда IP адрес не соответствует формату IPv4.
      */
     @Override
+    @Loggable
     public boolean test(Document document) {
         var ipv4 = documentUtil.getValueByTagName(document, IP);
         if (IPV4_REGEXP.matcher(ipv4).matches()) {

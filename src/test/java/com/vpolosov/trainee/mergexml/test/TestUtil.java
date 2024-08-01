@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -48,5 +49,16 @@ public class TestUtil {
         return fileUtil.listXml(path.toAbsolutePath().toString(), 1, 10).stream()
             .map(documentUtil::parse)
             .toList();
+    }
+
+    /**
+     * Возвращает список XML {@link Document} по указанному пути.
+     *
+     * @param path путь до xml файла.
+     * @return список XML {@link Document}.
+     */
+    public static Document document(Path path) {
+        var file = new File(path.toAbsolutePath().toString());
+        return documentUtil.parse(file);
     }
 }

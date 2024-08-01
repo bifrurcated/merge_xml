@@ -13,6 +13,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -133,5 +136,21 @@ public class FileUtil {
             }
             throw new FileDeleteException("Unable to delete file: " + file);
         }
+    }
+
+    /**
+     * Возвращает имя файла с указанием времени.
+     *
+     * @param fileName  имя файла.
+     * @param clock     часы для установки времени.
+     * @param formatter формат времени.
+     * @return имя результирующего файла с меткой времени создания.
+     */
+    public String fileNameWithTime(String fileName, Clock clock, DateTimeFormatter formatter) {
+        var timestampz = "{%s}".formatted(LocalDateTime.now(clock).format(formatter));
+        var pointIndex = fileName.indexOf('.');
+        return fileName.substring(FIRST_ELEMENT, pointIndex)
+            + timestampz
+            + fileName.substring(pointIndex);
     }
 }
