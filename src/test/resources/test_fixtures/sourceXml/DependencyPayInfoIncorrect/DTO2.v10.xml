@@ -22,8 +22,8 @@
             <OKATOCODE>0</OKATOCODE>
             <CODEREV>1</CODEREV>
             <OPERTYPE>01</OPERTYPE>
-            <PAYGRNDPARAM>ТП</PAYGRNDPARAM>
-            <PAYTYPEPARAM>НС</PAYTYPEPARAM>
+            <PAYGRNDPARAM>ВЗ</PAYGRNDPARAM>
+            <PAYTYPEPARAM>РТ</PAYTYPEPARAM>
             <DATEBILLON>12.07.2024</DATEBILLON>
             <DUEDATA>10</DUEDATA>
             <PAYUNTIL/>

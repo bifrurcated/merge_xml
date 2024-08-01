@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <BSMessage xmlns="BS_R_PAYDOCRU" Version="string" ID="string" DateTime="">
     <BSHead RSys="DBO2" ASys="CFT2" route="" xmlns="">
-        <Client RCustID="" ACustID="" INN="5001087596"/>
-        <Branch RBranchID="" ABranchID="" BIC="044525411"/>
-        <Office Officecode="008" Robotuser=""/>
+        <Client RCustID="" ACustID="" INN="7703781110"/>
+        <Branch RBranchID="" ABranchID="" BIC="040702788"/>
+        <Office Officecode="009" Robotuser=""/>
     </BSHead>
     <DOCUMENTS xmlns="">
         <DOCUMENT>
-            <AMOUNT>51.00</AMOUNT>
+            <AMOUNT>12.00</AMOUNT>
             <CBCCODE/>
             <CURRCODE>810</CURRCODE>
-            <CUSTID>200000817</CUSTID>
+            <CUSTID>200000126</CUSTID>
             <IP>10.223.89.62</IP>
             <MAC/>
             <DOCDATEPARAM1>0</DOCDATEPARAM1>
@@ -18,9 +18,9 @@
             <DOCDATEPARAM3/>
             <DOCNUMPARAM1/>
             <DOCNUMPARAM2>0</DOCNUMPARAM2>
-            <GROUND>В том числе НДС 10% - 1 119.27</GROUND>
+            <GROUND>В том числе НДС 20% - 2.00</GROUND>
             <OKATOCODE>0</OKATOCODE>
-            <CODEREV>1</CODEREV>
+            <CODEREV>4</CODEREV>
             <OPERTYPE>01</OPERTYPE>
             <PAYGRNDPARAM>ТП</PAYGRNDPARAM>
             <PAYTYPEPARAM>НС</PAYTYPEPARAM>
@@ -57,15 +57,15 @@
             <TAXPERIODPARAM1>0</TAXPERIODPARAM1>
             <TAXPERIODPARAM2/>
             <TAXPERIODPARAM3/>
-            <DATETIMERECEIVE>22.02.2024:10:15:22</DATETIMERECEIVE>
+            <DATETIMERECEIVE>22.02.2024:10:12:03</DATETIMERECEIVE>
             <SERVICE/>
             <CODEUIP/>
             <STATUS/>
             <SENDNUMBER/>
             <RECEIVENUMBER/>
-            <DOCREF>a3b3c7b6ad9d4a69b02fa06e2a37e8e9</DOCREF>
+            <DOCREF>1fd63ceb89e44fe8875e1892a1cec5f2</DOCREF>
             <DOCUMENTDATE>22.02.2024</DOCUMENTDATE>
-            <DOCUMENTNUMBER>485</DOCUMENTNUMBER>
+            <DOCUMENTNUMBER>35</DOCUMENTNUMBER>
             <DELIVERYTYPE>2</DELIVERYTYPE>
             <CODEMESSAGE/>
             <MESSAGEFORBANK/>

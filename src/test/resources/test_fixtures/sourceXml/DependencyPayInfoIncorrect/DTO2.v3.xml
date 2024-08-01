@@ -3,11 +3,11 @@
     <BSHead RSys="DBO2" ASys="CFT2" route="" xmlns="">
         <Client RCustID="" ACustID="" INN="5001087596"/>
         <Branch RBranchID="" ABranchID="" BIC="044525411"/>
-        <Office Officecode="008" Robotuser=""/>
+        <Office Officecode="001" Robotuser=""/>
     </BSHead>
     <DOCUMENTS xmlns="">
         <DOCUMENT>
-            <AMOUNT>51.00</AMOUNT>
+            <AMOUNT>44.00</AMOUNT>
             <CBCCODE/>
             <CURRCODE>810</CURRCODE>
             <CUSTID>200000817</CUSTID>
@@ -22,7 +22,7 @@
             <OKATOCODE>0</OKATOCODE>
             <CODEREV>1</CODEREV>
             <OPERTYPE>01</OPERTYPE>
-            <PAYGRNDPARAM>ТП</PAYGRNDPARAM>
+            <PAYGRNDPARAM>НС</PAYGRNDPARAM>
             <PAYTYPEPARAM>НС</PAYTYPEPARAM>
             <DATEBILLON>12.07.2024</DATEBILLON>
             <DUEDATA>10</DUEDATA>
@@ -63,7 +63,7 @@
             <STATUS/>
             <SENDNUMBER/>
             <RECEIVENUMBER/>
-            <DOCREF>a3b3c7b6ad9d4a69b02fa06e2a37e8e9</DOCREF>
+            <DOCREF>a3b3c7b6ad9d4a69b02fa06e2a37e8e2</DOCREF>
             <DOCUMENTDATE>22.02.2024</DOCUMENTDATE>
             <DOCUMENTNUMBER>485</DOCUMENTNUMBER>
             <DELIVERYTYPE>2</DELIVERYTYPE>
