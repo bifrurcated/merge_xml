@@ -10,8 +10,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.stream.Collectors;
 
 /**
  * Конфигурация для XML.
@@ -48,7 +50,7 @@ public class XmlConfig {
     /**
      * Свойства приложения.
      *
-     * @param configPath путь до JSON файла с конфигурацией.
+     * @param configPath путь до txt файла с конфигурацией.
      * @param objectMapper предоставляет функции для чтения и записи JSON.
      * @return объект содержащий информацию о свойствах приложения.
      * @throws IOException если проблема низкого уровня ввода-вывода.
@@ -57,7 +59,10 @@ public class XmlConfig {
     public ConfigProperties configProperties(
         @Value("${merge-xml.config-path}") String configPath,
         ObjectMapper objectMapper) throws IOException {
-        var jsonFile = new File(configPath);
-        return objectMapper.readValue(jsonFile, ConfigProperties.class);
+        String jsonConfig = Files.lines(Paths.get(configPath))
+                .map(line -> line.split(" ", 2))
+                .map(arr->String.format("\"%s\":\"%s\"",arr[0], arr[1]))
+                .collect(Collectors.joining(",","{","}"));
+        return objectMapper.readValue(jsonConfig, ConfigProperties.class);
     }
 }

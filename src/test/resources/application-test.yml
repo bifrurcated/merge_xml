@@ -9,4 +9,4 @@ spring:
     contexts: test
 
 merge-xml:
-  config-path: config.json
+  config-path: config.txt
