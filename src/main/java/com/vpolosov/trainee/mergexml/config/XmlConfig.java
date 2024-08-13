@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Конфигурация для XML.
@@ -22,6 +23,23 @@ import java.util.stream.Collectors;
  */
 @Configuration
 public class XmlConfig {
+
+    /**
+     * Номер имени свойства в строке в конфигурационном файле.
+     */
+    private static final int INDEX_OF_PROPERTY_NAME = 0;
+
+    /**
+     * Номер значения свойства в строке в конфигурационном файле.
+     */
+    private static final int INDEX_OF_PROPERTY_VALUE = 1;
+
+    /**
+     * Обозначает максимальное количество значений на которое
+     * можно разделить строку в конфигурационном файле по заданному шаблону
+     * (в данном случае на 2 - имя свойства и значение).
+     */
+    private static final int LIMIT_FOR_SPLIT = 2;
 
     /**
      * Создаёт бин для работы с XML файлом.
@@ -59,10 +77,12 @@ public class XmlConfig {
     public ConfigProperties configProperties(
         @Value("${merge-xml.config-path}") String configPath,
         ObjectMapper objectMapper) throws IOException {
-        String jsonConfig = Files.lines(Paths.get(configPath))
-                .map(line -> line.split(" ", 2))
-                .map(arr->String.format("\"%s\":\"%s\"",arr[0], arr[1]))
-                .collect(Collectors.joining(",","{","}"));
-        return objectMapper.readValue(jsonConfig, ConfigProperties.class);
+        try(Stream<String> lines = Files.lines(Paths.get(configPath))) {
+            String jsonConfig = lines
+                    .map(line -> line.split(" ", LIMIT_FOR_SPLIT))
+                    .map(arr->String.format("\"%s\":\"%s\"",arr[INDEX_OF_PROPERTY_NAME], arr[INDEX_OF_PROPERTY_VALUE]))
+                    .collect(Collectors.joining(",","{","}"));
+            return objectMapper.readValue(jsonConfig, ConfigProperties.class);
+        }
     }
 }
