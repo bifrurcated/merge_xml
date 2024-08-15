@@ -25,7 +25,7 @@ public class CheckFileSize {
      * Проверяет файл на превышение лимитного размера.
      *
      * @param file который будет проверяться.
-     * @return {@code true} если файл не превышает лимитированного размера, иначе {@code false}.
+     * @return {@code true} если файл превышает лимитированного размера, иначе {@code false}.
      */
     @Loggable
     public boolean isMoreThanFiveKb(File file) {
