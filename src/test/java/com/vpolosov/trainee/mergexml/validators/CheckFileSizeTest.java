@@ -14,7 +14,6 @@ import java.nio.file.Files;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.spy;
 
 @DisplayName("Тестирование валидатора для проверки размера файла")
 class CheckFileSizeTest {
@@ -28,7 +27,7 @@ class CheckFileSizeTest {
     static void init() {
         ConfigProperties configProperties = new ConfigProperties();
         configProperties.setMaxResultFileWeight(DataSize.parse("500KB"));
-        checkFileSize = spy(new CheckFileSize(configProperties));
+        checkFileSize = new CheckFileSize(configProperties);
         tempFile = File.createTempFile("total_test_file", ".xml");
     }
 
