@@ -1,8 +1,16 @@
 package com.vpolosov.trainee.mergexml.controller;
 
 import com.vpolosov.trainee.mergexml.aspect.Loggable;
+import com.vpolosov.trainee.mergexml.handler.dto.ErrorResponseDTO;
 import com.vpolosov.trainee.mergexml.service.HistoryService;
 import com.vpolosov.trainee.mergexml.service.MergeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +32,7 @@ import java.nio.file.Path;
 @RestController
 @RequestMapping("/xml")
 @RequiredArgsConstructor
+@Tag(name = "MergeController", description = "Контроллер для слияния документов и получения логов.")
 public class MergeController {
 
     /**
@@ -44,7 +53,20 @@ public class MergeController {
      */
     @PostMapping
     @Loggable
-    public String patchXml(@RequestBody String path) {
+    @Operation(
+            summary = "Объедениение документов.",
+            description = "Позволят объеденить несколько платежных докментов."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Успешное выполнение запроса."),
+        @ApiResponse(responseCode = "400", description = "Ошибки валидации документов.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
+        @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+    })
+    public String patchXml(@Parameter(description = "Путь к директории с документами для объединения.",
+            required = true)
+                           @RequestBody String path) {
         var total = mergeService.merge(path);
         historyService.addHistoryFromTotal(total);
         return "Total.xml was created!";
@@ -58,6 +80,16 @@ public class MergeController {
      */
     @GetMapping("/logs")
     @Loggable
+    @Operation(
+            summary = "Получение логов.",
+            description = "Позволят посмотреть пользовательские логи."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Успешное выполнение запроса, возвращаюся все логи."),
+        @ApiResponse(responseCode = "500", description = "Ошибка чтения файла с логами.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+    })
+
     public String getLogs() throws IOException {
         String path = "logs/user-logs.log";
         return Files.readString(Path.of(path));
