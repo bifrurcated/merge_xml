@@ -26,7 +26,6 @@ merge-xml:
 springdoc:
   swagger-ui:
     path: /swagger
-  override-with-generic-response: false
 
 openapi:
   title: @project.name@
