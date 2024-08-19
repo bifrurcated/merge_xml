@@ -22,3 +22,12 @@ spring:
 
 merge-xml:
   config-path: ${MERGE_XML_CONFIG_PATH:config.txt}
+
+springdoc:
+  swagger-ui:
+    path: /swagger
+
+openapi:
+  title: @project.name@
+  version: @project.version@
+  description: @project.description@

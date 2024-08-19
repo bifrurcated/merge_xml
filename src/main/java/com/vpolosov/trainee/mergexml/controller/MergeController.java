@@ -3,6 +3,9 @@ package com.vpolosov.trainee.mergexml.controller;
 import com.vpolosov.trainee.mergexml.aspect.Loggable;
 import com.vpolosov.trainee.mergexml.service.HistoryService;
 import com.vpolosov.trainee.mergexml.service.MergeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +27,7 @@ import java.nio.file.Path;
 @RestController
 @RequestMapping("/xml")
 @RequiredArgsConstructor
+@Tag(name = "MergeController", description = "Контроллер для слияния документов и получения логов.")
 public class MergeController {
 
     /**
@@ -44,7 +48,13 @@ public class MergeController {
      */
     @PostMapping
     @Loggable
-    public String patchXml(@RequestBody String path) {
+    @Operation(
+            summary = "Объедениение документов.",
+            description = "Позволят объеденить несколько платежных докментов."
+    )
+    public String patchXml(@Parameter(description = "Путь к директории с документами для объединения.",
+            required = true)
+                           @RequestBody String path) {
         var total = mergeService.merge(path);
         historyService.addHistoryFromTotal(total);
         return "Total.xml was created!";
@@ -58,6 +68,10 @@ public class MergeController {
      */
     @GetMapping("/logs")
     @Loggable
+    @Operation(
+            summary = "Получение логов.",
+            description = "Позволят посмотреть пользовательские логи."
+    )
     public String getLogs() throws IOException {
         String path = "logs/user-logs.log";
         return Files.readString(Path.of(path));
