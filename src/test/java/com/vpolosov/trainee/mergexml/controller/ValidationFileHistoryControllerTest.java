@@ -3,7 +3,7 @@ package com.vpolosov.trainee.mergexml.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vpolosov.trainee.mergexml.dtos.ValidationFileHistoryDto;
 import com.vpolosov.trainee.mergexml.repository.ValidationFileHistoryRepository;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,6 +17,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -25,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Testcontainers
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@Sql(value = "file:src/test/resources/test_data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+@DisplayName("Тест контроллера ValidationFileHistoryController")
 class ValidationFileHistoryControllerTest {
 
     @Autowired
@@ -38,7 +39,9 @@ class ValidationFileHistoryControllerTest {
     private ValidationFileHistoryRepository repository;
 
     @Test
-    void testAllHistoryEndpointWorksCorrect() throws Exception {
+    @Sql(value = "file:src/test/resources/test_data.sql")
+    @DisplayName("Тест контроллера ValidationFileHistoryController.getAll() когда есть данные в БД")
+    void getAll_whenGetAllHistoryAndDataInDB_thenReturnOkAndData() throws Exception {
         MockHttpServletResponse mockResponse = mockMvc
                 .perform(get("/fileHistory/all"))
                 .andExpect(status().isOk())
@@ -49,7 +52,7 @@ class ValidationFileHistoryControllerTest {
                 objectMapper.getTypeFactory().constructCollectionType(List.class, ValidationFileHistoryDto.class)
         );
         assertAll(
-                () -> Assertions.assertEquals(9, response.size()),
+                () -> assertEquals(9, response.size()),
                 () -> assertTrue(
                         response.get(0).getValidationDate().isAfter(response.get(response.size() - 1).getValidationDate())
                 )
@@ -57,7 +60,8 @@ class ValidationFileHistoryControllerTest {
     }
 
     @Test
-    void testWhatIfDBIsEmptyWHenReturnEmptyList() throws Exception {
+    @DisplayName("Тест контроллера ValidationFileHistoryController.getAll() когда нету данных в БД")
+    void getAll_whenGetAllHistoryAndDBIsEmpty_thenReturnOkAndEmptyJsonArray() throws Exception {
         repository.deleteAll();
         MockHttpServletResponse mockResponse = mockMvc
                 .perform(get("/fileHistory/all"))

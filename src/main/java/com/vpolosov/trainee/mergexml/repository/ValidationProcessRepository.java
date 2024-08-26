@@ -5,5 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
+/**
+ * Репозиторий для сущности {@link ValidationProcess}.
+ * Наследуется от {@link JpaRepository}.
+ *
+ * @author Samat Hamzin
+ */
 public interface ValidationProcessRepository extends JpaRepository<ValidationProcess, UUID> {
 }
